@@ -1,8 +1,11 @@
 {
   "name": "starlight-md-txt",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Starlight plugin to expose documentation pages as raw, agent-friendly Markdown at .md.txt URLs",
   "type": "module",
+  "workspaces": [
+    "docs"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -14,9 +17,16 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "version-packages": "changeset version",
+    "release": "npm run build && changeset publish",
+    "build:docs": "npm run build && npm run build --workspace=docs"
   },
   "keywords": [
     "astro",
@@ -33,15 +43,17 @@
     "astro": ">=4.0.0 || >=5.0.0"
   },
   "dependencies": {
-    "unified": "^11.0.0",
-    "remark-parse": "^11.0.0",
     "remark-mdx": "^3.0.0",
+    "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
+    "unified": "^11.0.0",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
     "@astrojs/starlight": "^0.37.1",
-    "astro": "^5.16.5"
+    "@changesets/changelog-github": "^0.7.0",
+    "@changesets/cli": "^2.31.0",
+    "astro": "^5.16.5",
+    "typescript": "^5.0.0"
   }
 }

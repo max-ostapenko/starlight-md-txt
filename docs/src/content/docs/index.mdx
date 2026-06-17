@@ -1,0 +1,36 @@
+---
+title: starlight-md-txt
+description: Expose your Starlight documentation pages as raw, agent-friendly Markdown at .md.txt URLs.
+template: splash
+hero:
+  tagline: Make your documentation easily consumable by AI agents, LLMs, and custom RAG systems.
+  image:
+    file: ../../../public/favicon.svg
+  actions:
+    - text: Get Started
+      link: /starlight-md-txt/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/maxostapenko/starlight-md-txt
+      icon: external
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Features
+
+<CardGrid idx="features">
+  <Card title="Agent Friendly" icon="open-book">
+    Exposes each documentation page as raw, clean Markdown at `/page.md.txt`.
+  </Card>
+  <Card title="AST-based Transpilation" icon="setting">
+    Uses unified/remark parsers to translate complex Starlight/JSX components into native Markdown.
+  </Card>
+  <Card title="Selective Frontmatter" icon="document">
+    Only retains `title` and `description` to keep LLM context clean and efficient.
+  </Card>
+  <Card title="Draft Support" icon="pencil">
+    Mirrors Starlight's draft behavior or can optionally include draft pages in builds.
+  </Card>
+</CardGrid>

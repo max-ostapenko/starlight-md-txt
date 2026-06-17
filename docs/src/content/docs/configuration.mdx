@@ -1,0 +1,34 @@
+---
+title: Configuration
+description: Options reference for starlight-md-txt.
+---
+
+`starlight-md-txt` accepts configuration options to customize the behavior of the generated `.md.txt` files.
+
+## Options Reference
+
+Pass these options directly to the `starlightMdTxt` function in your `astro.config.mjs` config:
+
+```javascript
+starlightMdTxt({
+  includeDrafts: false, // boolean (optional)
+})
+```
+
+### `includeDrafts`
+
+- **Type**: `boolean`
+- **Default**: `false`
+
+By default, the plugin mirrors Starlight's draft behavior. Pages marked with `draft: true` in their frontmatter will not generate corresponding `.md.txt` files during production builds.
+
+Setting `includeDrafts` to `true` forces the generation of `.md.txt` files for draft pages even in production builds.
+
+## How Components are Transpiled
+
+To keep the output clean for LLMs, the plugin uses an AST-based Remark parser to translate custom Starlight/JSX components into clean, native Markdown elements:
+
+- `<Tabs>` and `<TabItem>` components are converted into clean, bold headers.
+- `<Aside>` elements are translated into blockquotes.
+- `<Card>` and `<LinkCard>` blocks are transformed to standard headers.
+- MDX imports and JSX/MDX comments are completely removed.

@@ -1,0 +1,44 @@
+---
+title: Getting Started
+description: How to install and configure the starlight-md-txt plugin.
+---
+
+`starlight-md-txt` is a community Starlight plugin to expose your documentation pages as raw, agent-friendly Markdown at `.md.txt` URLs (e.g. `/getting-started.md.txt`).
+
+This is designed to help AI agents, LLMs, and search crawlers easily consume your documentation in a structured, clean format without navigation headers, footers, script code, or CSS wrappers.
+
+## Installation
+
+Install the plugin using your package manager:
+
+```bash
+npm install starlight-md-txt
+```
+
+## Usage
+
+Add the plugin to your `astro.config.mjs` within the `starlight` integrations configuration:
+
+```javascript
+// astro.config.mjs
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+import starlightMdTxt from 'starlight-md-txt';
+
+export default defineConfig({
+  site: 'https://your-site.com',
+  integrations: [
+    starlight({
+      title: 'My Documentation',
+      plugins: [
+        starlightMdTxt({
+          // Optional options go here
+          includeDrafts: false,
+        }),
+      ],
+    }),
+  ],
+});
+```
+
+Now, when you run your build, all of your documentation pages will have a corresponding `.md.txt` file (e.g., `dist/getting-started.md.txt`) alongside the standard HTML pages.
