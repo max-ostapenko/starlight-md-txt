@@ -3,7 +3,7 @@ title: Configuration
 description: Options reference for starlight-md-txt.
 ---
 
-`starlight-md-txt` accepts configuration options to customize the behavior of the generated `.md.txt` files.
+`starlight-md-txt` accepts configuration options to customize the behavior of the generated files.
 
 ## Options Reference
 
@@ -12,17 +12,25 @@ Pass these options directly to the `starlightMdTxt` function in your `astro.conf
 ```javascript
 starlightMdTxt({
   includeDrafts: false, // boolean (optional)
+  format: '.md',       // '.md' | '.md.txt' (optional)
 })
 ```
+
+### `format`
+
+- **Type**: `'.md' | '.md.txt'`
+- **Default**: `'.md'`
+
+The file extension/format to use for generated files. If you use `.md` (default), the response header `Content-Type` is set to `text/markdown; charset=utf-8`. If you choose `.md.txt`, the `Content-Type` is set to `text/plain; charset=utf-8`.
 
 ### `includeDrafts`
 
 - **Type**: `boolean`
 - **Default**: `false`
 
-By default, the plugin mirrors Starlight's draft behavior. Pages marked with `draft: true` in their frontmatter will not generate corresponding `.md.txt` files during production builds.
+By default, the plugin mirrors Starlight's draft behavior. Pages marked with `draft: true` in their frontmatter will not generate corresponding files during production builds.
 
-Setting `includeDrafts` to `true` forces the generation of `.md.txt` files for draft pages even in production builds.
+Setting `includeDrafts` to `true` forces the generation of files for draft pages even in production builds.
 
 ## How Components are Transpiled
 

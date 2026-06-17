@@ -15,5 +15,6 @@ interface ImportMeta {
 declare module 'virtual:starlight-md-txt/config' {
   export const config: {
     includeDrafts: boolean;
+    format: '.md' | '.md.txt';
   };
 }

@@ -160,9 +160,14 @@ export const GET: APIRoute = async ({ props }: any) => {
   const cleanedBody = await cleanMDX(entry.body || '');
   const rawMarkdown = `---\n${yamlFrontmatter}\n---\n\n${cleanedBody.trim()}`;
 
+  const format = config.format ?? '.md';
+  const contentType = format === '.md.txt'
+    ? 'text/plain; charset=utf-8'
+    : 'text/markdown; charset=utf-8';
+
   return new Response(rawMarkdown, {
     headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
+      'Content-Type': contentType,
     },
   });
 };

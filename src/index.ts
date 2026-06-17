@@ -6,6 +6,11 @@ export interface StarlightMdTxtOptions {
    * Defaults to false (mirrors Starlight draft behaviour).
    */
   includeDrafts?: boolean;
+  /**
+   * File extension format for raw markdown.
+   * Defaults to '.md'.
+   */
+  format?: '.md' | '.md.txt';
 }
 
 export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
@@ -17,10 +22,13 @@ export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
           name: 'starlight-md-txt-integration',
           hooks: {
             'astro:config:setup'({ injectRoute, updateConfig }: any) {
-              // Inject the custom dynamic route matching [...slug].md.txt
+              const format = opts.format ?? '.md';
+              const cleanFormat = format.startsWith('.') ? format : `.${format}`;
+
+              // Inject the custom dynamic route matching [...slug] + format
               injectRoute({
                 entrypoint: fileURLToPath(new URL('./route.js', import.meta.url)),
-                pattern: '/[...slug].md.txt',
+                pattern: `/[...slug]${cleanFormat}`,
                 prerender: true,
               });
 
@@ -42,6 +50,7 @@ export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
                         if (id === resolvedVirtualModuleId) {
                           return `export const config = ${JSON.stringify({
                             includeDrafts: opts.includeDrafts ?? false,
+                            format: cleanFormat,
                           })};`;
                         }
                       },
