@@ -12,6 +12,6 @@
   "dependencies": {
     "@astrojs/starlight": "^0.37.1",
     "astro": "^5.16.5",
-    "starlight-md-txt": "file:.."
+    "starlight-md-txt": "0.0.1"
   }
 }

@@ -10,6 +10,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   release:
     name: Release
+    if: ${{ github.repository_owner == 'max-ostapenko' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -19,6 +20,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -36,5 +39,8 @@ jobs:
         with:
           publish: npm run release
           version: npm run version-packages
+          commit: "[ci] release"
+          title: "[ci] release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ""  # See https://github.com/changesets/changesets/issues/1152#issuecomment-3190884868

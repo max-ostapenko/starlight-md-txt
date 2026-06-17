@@ -12,6 +12,7 @@
   "homepage": "https://github.com/max-ostapenko/starlight-md-txt#readme",
   "type": "module",
   "workspaces": [
+    ".",
     "docs"
   ],
   "main": "dist/index.js",
