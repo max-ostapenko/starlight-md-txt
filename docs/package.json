@@ -10,8 +10,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.37.1",
-    "astro": "^5.16.5",
+    "@astrojs/starlight": "^0.40.0",
+    "astro": "^6.4.8",
     "starlight-md-txt": "file:.."
   }
 }
