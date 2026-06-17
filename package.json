@@ -1,6 +1,6 @@
 {
   "name": "starlight-md-txt",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Starlight plugin to expose documentation pages as raw, agent-friendly Markdown at .md.txt URLs",
   "repository": {
     "type": "git",
