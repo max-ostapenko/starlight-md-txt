@@ -6,10 +6,7 @@
     "type": "git",
     "url": "git+https://github.com/max-ostapenko/starlight-md-txt.git"
   },
-  "bugs": {
-    "url": "https://github.com/max-ostapenko/starlight-md-txt/issues"
-  },
-  "homepage": "https://github.com/max-ostapenko/starlight-md-txt#readme",
+  "homepage": "https://max-ostapenko.github.io/starlight-md-txt",
   "type": "module",
   "workspaces": [
     ".",
