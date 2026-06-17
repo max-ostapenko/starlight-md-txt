@@ -29,11 +29,10 @@ jobs:
           node-version: 22
           cache: 'npm'
 
-      - name: Update npm
-        run: npm install -g npm@latest
-
       - name: Install Dependencies
-        run: npm ci
+        run: |
+          npm install -g npm@latest
+          npm ci
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
