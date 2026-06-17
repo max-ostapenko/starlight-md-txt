@@ -49,7 +49,7 @@
   "license": "MIT",
   "peerDependencies": {
     "@astrojs/starlight": ">=0.30.0",
-    "astro": ">=4.0.0 || >=5.0.0"
+    "astro": ">=4.0.0 || >=5.0.0 || >=6.0.0"
   },
   "dependencies": {
     "remark-mdx": "^3.0.0",
@@ -59,10 +59,10 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@astrojs/starlight": "^0.37.1",
-    "@changesets/changelog-github": "^0.7.0",
-    "@changesets/cli": "^2.31.0",
-    "astro": "^5.16.5",
-    "typescript": "^5.0.0"
+    "@astrojs/starlight": "0.40.0",
+    "@changesets/changelog-github": "0.7.0",
+    "@changesets/cli": "2.31.0",
+    "astro": "6.4.8",
+    "typescript": "5.9.3"
   }
 }
