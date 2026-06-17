@@ -38,7 +38,7 @@ async function cleanMDX(body: string): Promise<string> {
   const processor = unified()
     .use(remarkParse)
     .use(remarkMdx)
-    .use(() => (tree) => {
+    .use(() => (tree: any) => {
       // 1. Remove ES module import/export nodes (mdxjsEsm)
       tree.children = tree.children.filter((node: any) => node.type !== 'mdxjsEsm');
 
@@ -130,11 +130,11 @@ export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
   
   // Follow the 'draft' attribute configuration
-  const publicDocs = docs.filter((entry) => 
+  const publicDocs = docs.filter((entry: any) => 
     isDev || config.includeDrafts || entry.data.draft !== true
   );
 
-  return publicDocs.map((entry) => {
+  return publicDocs.map((entry: any) => {
     // Starlight index is empty string id, map to undefined so Astro generates root page
     const slug = entry.id === '' || entry.id === 'index' ? undefined : entry.id;
     return {
@@ -144,7 +144,7 @@ export async function getStaticPaths() {
   });
 }
 
-export const GET: APIRoute = async ({ props }) => {
+export const GET: APIRoute = async ({ props }: any) => {
   const { entry } = props;
 
   // Keep only 'title' and 'description' in the frontmatter
