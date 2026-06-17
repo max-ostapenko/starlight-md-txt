@@ -134,7 +134,7 @@ export async function getStaticPaths() {
     isDev || config.includeDrafts || entry.data.draft !== true
   );
 
-  return publicDocs.map((entry: any) => {
+  const paths = publicDocs.map((entry: any) => {
     // Starlight index is empty string id, map to undefined so Astro generates root page
     const slug = entry.id === '' || entry.id === 'index' ? undefined : entry.id;
     return {
@@ -142,6 +142,25 @@ export async function getStaticPaths() {
       props: { entry },
     };
   });
+
+  // If there is no custom 404 entry in the collection, add a fallback 404 route
+  const hasCustom404 = publicDocs.some((entry: any) => entry.id === '404');
+  if (!hasCustom404) {
+    paths.push({
+      params: { slug: '404' },
+      props: {
+        entry: {
+          id: '404',
+          body: 'Page not found',
+          data: {
+            title: 'Page not found',
+          },
+        },
+      },
+    });
+  }
+
+  return paths;
 }
 
 export const GET: APIRoute = async ({ props }: any) => {
@@ -165,7 +184,10 @@ export const GET: APIRoute = async ({ props }: any) => {
     ? 'text/plain; charset=utf-8'
     : 'text/markdown; charset=utf-8';
 
+  const is404 = entry.id === '404';
+
   return new Response(rawMarkdown, {
+    status: is404 ? 404 : 200,
     headers: {
       'Content-Type': contentType,
     },
