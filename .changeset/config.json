@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "maxostapenko/starlight-md-txt"
+      "repo": "max-ostapenko/starlight-md-txt"
     }
   ],
   "commit": false,
