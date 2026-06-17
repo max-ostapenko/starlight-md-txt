@@ -1,0 +1,46 @@
+{
+  "name": "starlight-md-txt",
+  "version": "1.0.0",
+  "description": "Starlight plugin to expose documentation pages as raw, agent-friendly Markdown at .md.txt URLs",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "astro",
+    "starlight",
+    "plugin",
+    "markdown",
+    "agent",
+    "llm"
+  ],
+  "author": "Max Ostapenko",
+  "license": "MIT",
+  "peerDependencies": {
+    "@astrojs/starlight": ">=0.30.0",
+    "astro": ">=4.0.0 || >=5.0.0"
+  },
+  "dependencies": {
+    "unified": "^11.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-mdx": "^3.0.0",
+    "remark-stringify": "^11.0.0",
+    "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@astrojs/starlight": "^0.37.1",
+    "astro": "^5.16.5"
+  }
+}
