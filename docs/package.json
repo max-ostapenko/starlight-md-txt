@@ -1,6 +1,6 @@
 {
   "name": "starlight-md-txt-docs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,6 +12,6 @@
   "dependencies": {
     "@astrojs/starlight": "^0.41.3",
     "astro": "^7.1.0",
-    "starlight-md-txt": "^0.1.0"
+    "starlight-md-txt": "^0.2.0"
   }
 }
