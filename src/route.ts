@@ -176,7 +176,17 @@ export const GET: APIRoute = async ({ props }: any) => {
   }
 
   const yamlFrontmatter = toYAML(frontmatterData).trim();
-  const cleanedBody = await cleanMDX(entry.body || '');
+  // Plain .md pages may contain HTML that isn't valid MDX (e.g. <br>), so only
+  // run the MDX transform on .mdx entries, and fall back to the raw body if it fails.
+  const body = entry.body || '';
+  const isMdx = (entry.filePath ?? '').endsWith('.mdx');
+  let cleanedBody: string;
+  try {
+    cleanedBody = isMdx ? await cleanMDX(body) : body;
+  } catch (err: any) {
+    console.warn(`[starlight-md-txt] ${entry.id}: ${err?.message ?? err}; serving raw body`);
+    cleanedBody = body;
+  }
   const rawMarkdown = `---\n${yamlFrontmatter}\n---\n\n${cleanedBody.trim()}`;
 
   const format = config.format ?? '.md';
