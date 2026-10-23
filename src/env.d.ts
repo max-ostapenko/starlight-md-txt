@@ -18,3 +18,7 @@ declare module 'virtual:starlight-md-txt/config' {
     format: '.md' | '.md.txt';
   };
 }
+
+interface ImportMetaEnv {
+  readonly BASE_URL: string;
+}

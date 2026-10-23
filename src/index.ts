@@ -17,7 +17,12 @@ export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
   return {
     name: 'starlight-md-txt',
     hooks: {
-      setup({ addIntegration }: any) {
+      setup({ addIntegration, addRouteMiddleware }: any) {
+        // Route middleware needs Starlight 0.32+; older versions just skip the <link> tag.
+        if (typeof addRouteMiddleware === 'function') {
+          addRouteMiddleware({ entrypoint: fileURLToPath(new URL('./middleware.js', import.meta.url)) });
+        }
+
         addIntegration({
           name: 'starlight-md-txt-integration',
           hooks: {

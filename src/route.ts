@@ -5,6 +5,7 @@ import remarkParse from 'remark-parse';
 import remarkMdx from 'remark-mdx';
 import remarkStringify from 'remark-stringify';
 import { visit } from 'unist-util-visit';
+import { markdownSlug } from './paths.js';
 // @ts-ignore
 import { config } from 'virtual:starlight-md-txt/config';
 
@@ -135,8 +136,8 @@ export async function getStaticPaths() {
   );
 
   const paths = publicDocs.map((entry: any) => {
-    // Starlight index is empty string id, map to undefined so Astro generates root page
-    const slug = entry.id === '' || entry.id === 'index' ? undefined : entry.id;
+    // The root index page has an empty id; serve it as /index.md rather than a bare /.md file
+    const slug = markdownSlug(entry.id);
     return {
       params: { slug },
       props: { entry },
