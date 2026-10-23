@@ -14,6 +14,7 @@ starlightMdTxt({
   includeDrafts: false, // boolean (optional)
   format: '.md',       // '.md' | '.md.txt' (optional)
   alternateLink: false, // boolean (optional)
+  dynamicRouting: true, // boolean (optional)
 })
 ```
 
@@ -30,6 +31,13 @@ The file extension/format to use for generated files. If you use `.md` (default)
 - **Default**: `false`
 
 Adds `<link rel="alternate" type="text/markdown" href="/path/page.md">` to the `<head>` of every documentation page (`type="text/plain"` with the `.md.txt` format), so agents and crawlers that land on the HTML page can discover its Markdown version. The link respects Astro's `base` option. Requires Starlight 0.32 or later; on older versions the option is ignored.
+
+### `dynamicRouting`
+
+- **Type**: `boolean`
+- **Default**: `true`
+
+Registers the `/[...slug].md` (or `/[...slug].md.txt`) route that generates a Markdown file for every documentation page. Set it to `false` to turn off Markdown output, for example in one environment, without removing the plugin. If `alternateLink` is also on, the plugin logs a warning, because the links would point to files that aren't generated.
 
 ### `includeDrafts`
 

@@ -5,7 +5,7 @@ A community Starlight plugin to expose your documentation pages as raw, agent-fr
 This is designed to help AI agents, LLMs, and search crawlers easily consume your documentation in a structured, clean format without navigation headers, footers, script code, or CSS wrappers.
 
 ## Features
-- **Dynamic Routing:** Automatically registers routes matching `/[...slug].md` (or `.md.txt`) for all pages in your Starlight collection. The root index page is served at `/index.md`.
+- **Dynamic Routing (on by default):** Automatically registers routes matching `/[...slug].md` (or `.md.txt`) for all pages in your Starlight collection. The root index page is served at `/index.md`.
 - **Discoverable (opt-in):** With `alternateLink: true`, adds `<link rel="alternate" type="text/markdown" href="…">` to each page's `<head>`, so agents and crawlers that land on the HTML page can find its Markdown version (Starlight 0.32+).
 - **AST-based MDX Transpilation:** Rather than basic regex/bruteforce string replacement, it uses a proper AST-based Remark parser (`unified`, `remark-parse`, `remark-mdx`) to translate custom Starlight/JSX components into clean, native Markdown elements:
   - `<Tabs>` and `<TabItem>` components are converted into clean, bold headers.
@@ -46,6 +46,8 @@ export default defineConfig({
           format: '.md',
           // Optional: add <link rel="alternate"> to each page's <head>
           alternateLink: false,
+          // Optional: set to false to stop generating the Markdown files
+          dynamicRouting: true,
         }),
       ],
     }),

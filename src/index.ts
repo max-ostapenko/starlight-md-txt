@@ -17,13 +17,24 @@ export interface StarlightMdTxtOptions {
    * Requires Starlight 0.32+. Defaults to false.
    */
   alternateLink?: boolean;
+  /**
+   * Register the `/[...slug].md` (or `.md.txt`) route that generates a Markdown
+   * file for every page. Set to false to turn off Markdown output, for example
+   * in one environment. Defaults to true.
+   */
+  dynamicRouting?: boolean;
 }
 
 export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
   return {
     name: 'starlight-md-txt',
     hooks: {
-      setup({ addIntegration, addRouteMiddleware }: any) {
+      setup({ addIntegration, addRouteMiddleware, logger }: any) {
+        const dynamicRouting = opts.dynamicRouting ?? true;
+        if (opts.alternateLink && !dynamicRouting) {
+          logger?.warn('`alternateLink` is on but `dynamicRouting` is off, so the links will point to Markdown files that are not generated.');
+        }
+
         // Route middleware needs Starlight 0.32+; older versions just skip the <link> tag.
         if (opts.alternateLink && typeof addRouteMiddleware === 'function') {
           addRouteMiddleware({ entrypoint: fileURLToPath(new URL('./middleware.js', import.meta.url)) });
@@ -37,11 +48,13 @@ export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
               const cleanFormat = format.startsWith('.') ? format : `.${format}`;
 
               // Inject the custom dynamic route matching [...slug] + format
-              injectRoute({
-                entrypoint: fileURLToPath(new URL('./route.js', import.meta.url)),
-                pattern: `/[...slug]${cleanFormat}`,
-                prerender: true,
-              });
+              if (dynamicRouting) {
+                injectRoute({
+                  entrypoint: fileURLToPath(new URL('./route.js', import.meta.url)),
+                  pattern: `/[...slug]${cleanFormat}`,
+                  prerender: true,
+                });
+              }
 
               // Create virtual module for configuration passing
               const virtualModuleId = 'virtual:starlight-md-txt/config';
