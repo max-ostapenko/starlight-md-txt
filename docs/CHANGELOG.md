@@ -1,5 +1,12 @@
 # starlight-md-txt-docs
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [[`ec16691`](https://github.com/max-ostapenko/starlight-md-txt/commit/ec16691cb5753cfd848cf850f35aa83ab5802207)]:
+  - starlight-md-txt@0.2.0
+
 ## 0.0.2
 
 ### Patch Changes
