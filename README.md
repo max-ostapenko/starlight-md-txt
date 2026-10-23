@@ -6,6 +6,8 @@ This is designed to help AI agents, LLMs, and search crawlers easily consume you
 
 ## Features
 - **Dynamic Routing (on by default):** Automatically registers routes matching `/[...slug].md` (or `.md.txt`) for all pages in your Starlight collection. The root index page is served at `/index.md`.
+- **Absolute links (opt-in):** With `absoluteLinks: true`, links to other docs pages point to their Markdown files, other root-relative links become absolute URLs, and local images point to their built `/_astro/` files, so a Markdown file works when read outside the site. Needs Astro's `site` option.
+- **Clean tables:** GFM tables in MDX pages round-trip as tables instead of escaped text.
 - **Discoverable (opt-in):** With `alternateLink: true`, adds `<link rel="alternate" type="text/markdown" href="…">` to each page's `<head>`, so agents and crawlers that land on the HTML page can find its Markdown version (Starlight 0.32+).
 - **AST-based MDX Transpilation:** Rather than basic regex/bruteforce string replacement, it uses a proper AST-based Remark parser (`unified`, `remark-parse`, `remark-mdx`) to translate custom Starlight/JSX components into clean, native Markdown elements:
   - `<Tabs>` and `<TabItem>` components are converted into clean, bold headers.
@@ -48,6 +50,10 @@ export default defineConfig({
           alternateLink: false,
           // Optional: set to false to stop generating the Markdown files
           dynamicRouting: true,
+          // Optional: make links and images absolute, and point docs links to .md files
+          absoluteLinks: false,
+          // Optional: also generate 404.md
+          notFoundPage: false,
         }),
       ],
     }),

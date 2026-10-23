@@ -23,6 +23,18 @@ export interface StarlightMdTxtOptions {
    * in one environment. Defaults to true.
    */
   dynamicRouting?: boolean;
+  /**
+   * Generate `404.md` from a `404` collection entry, or a fallback
+   * "Page not found" page when there is none. Defaults to false.
+   */
+  notFoundPage?: boolean;
+  /**
+   * Make links in the generated Markdown work outside the site: links to other
+   * docs pages point to their Markdown files, other root-relative links and local
+   * images become absolute URLs. Requires Astro's `site` option for absolute URLs.
+   * Defaults to false.
+   */
+  absoluteLinks?: boolean;
 }
 
 export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
@@ -75,6 +87,8 @@ export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
                           return `export const config = ${JSON.stringify({
                             includeDrafts: opts.includeDrafts ?? false,
                             format: cleanFormat,
+                            notFoundPage: opts.notFoundPage ?? false,
+                            absoluteLinks: opts.absoluteLinks ?? false,
                           })};`;
                         }
                       },
