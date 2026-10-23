@@ -13,6 +13,10 @@ Pass these options directly to the `starlightMdTxt` function in your `astro.conf
 starlightMdTxt({
   includeDrafts: false, // boolean (optional)
   format: '.md',       // '.md' | '.md.txt' (optional)
+  alternateLink: false, // boolean (optional)
+  dynamicRouting: true, // boolean (optional)
+  absoluteLinks: false, // boolean (optional)
+  notFoundPage: false,  // boolean (optional)
 })
 ```
 
@@ -23,6 +27,41 @@ starlightMdTxt({
 
 The file extension/format to use for generated files. If you use `.md` (default), the response header `Content-Type` is set to `text/markdown; charset=utf-8`. If you choose `.md.txt`, the `Content-Type` is set to `text/plain; charset=utf-8`.
 
+### `alternateLink`
+
+- **Type**: `boolean`
+- **Default**: `false`
+
+Adds `<link rel="alternate" type="text/markdown" href="/path/page.md">` to the `<head>` of every documentation page (`type="text/plain"` with the `.md.txt` format), so agents and crawlers that land on the HTML page can discover its Markdown version. The link respects Astro's `base` option. Requires Starlight 0.32 or later; on older versions the option is ignored.
+
+### `dynamicRouting`
+
+- **Type**: `boolean`
+- **Default**: `true`
+
+Registers the `/[...slug].md` (or `/[...slug].md.txt`) route that generates a Markdown file for every documentation page. Set it to `false` to turn off Markdown output, for example in one environment, without removing the plugin. If `alternateLink` is also on, the plugin logs a warning, because the links would point to files that aren't generated.
+
+### `absoluteLinks`
+
+- **Type**: `boolean`
+- **Default**: `false`
+
+Makes the generated Markdown work when it's read outside your site, for example by an AI agent:
+
+- Links to other documentation pages point to their Markdown files, keeping any `#hash`: `/guides/setup/#install` becomes `https://example.com/guides/setup.md#install`.
+- Other root-relative and page-relative links become absolute URLs.
+- Local images (`./diagram.png`) point to the files Astro builds, such as `https://example.com/_astro/diagram.Ab12.webp`. To find them, the plugin renders each page once during the build.
+- Links inside raw HTML blocks (`href`, `src`) are rewritten too. Links inside code are left alone.
+
+Only URLs change; the rest of the Markdown is kept exactly as it was. Set Astro's [`site`](https://docs.astro.build/en/reference/configuration-reference/#site) option to get absolute URLs. Without it, links stay root-relative but still point to the Markdown files.
+
+### `notFoundPage`
+
+- **Type**: `boolean`
+- **Default**: `false`
+
+Generates `404.md` from a `404` page in your docs collection, or a short "Page not found" page if there is none. It's off by default because static hosts serve the file with status `200`, not `404`.
+
 ### `includeDrafts`
 
 - **Type**: `boolean`
@@ -31,6 +70,10 @@ The file extension/format to use for generated files. If you use `.md` (default)
 By default, the plugin mirrors Starlight's draft behavior. Pages marked with `draft: true` in their frontmatter will not generate corresponding files during production builds.
 
 Setting `includeDrafts` to `true` forces the generation of files for draft pages even in production builds.
+
+## File Paths
+
+Each page is served at its URL with the format extension appended, following the [llms.txt](https://llmstxt.org/) convention: `/guides/setup/` becomes `/guides/setup.md`, and the root index page becomes `/index.md`.
 
 ## How Components are Transpiled
 

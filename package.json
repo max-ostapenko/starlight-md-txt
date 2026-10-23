@@ -29,6 +29,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "test": "npm run build && node --test test/*.test.mjs",
     "prepare": "npm run build",
     "version-packages": "changeset version",
     "release": "npm run build && changeset publish",
@@ -45,10 +46,13 @@
   "author": "Max Ostapenko",
   "license": "MIT",
   "peerDependencies": {
+    "@astrojs/mdx": ">=3.0.0",
     "@astrojs/starlight": ">=0.30.0",
     "astro": ">=4.0.0 || >=5.0.0 || >=6.0.0 || >=7.0.0"
   },
   "dependencies": {
+    "mdast-util-gfm-table": "^2.0.0",
+    "micromark-extension-gfm-table": "^2.1.2",
     "remark-mdx": "^3.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
@@ -61,5 +65,10 @@
     "@changesets/cli": "^2.31.0",
     "astro": "^7.1.0",
     "typescript": "^5.9.3"
+  },
+  "peerDependenciesMeta": {
+    "@astrojs/mdx": {
+      "optional": true
+    }
   }
 }

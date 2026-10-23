@@ -11,13 +11,47 @@ export interface StarlightMdTxtOptions {
    * Defaults to '.md'.
    */
   format?: '.md' | '.md.txt';
+  /**
+   * Add `<link rel="alternate" type="text/markdown" href="...">` to each page's
+   * `<head>` so agents and crawlers can discover its Markdown version.
+   * Requires Starlight 0.32+. Defaults to false.
+   */
+  alternateLink?: boolean;
+  /**
+   * Register the `/[...slug].md` (or `.md.txt`) route that generates a Markdown
+   * file for every page. Set to false to turn off Markdown output, for example
+   * in one environment. Defaults to true.
+   */
+  dynamicRouting?: boolean;
+  /**
+   * Generate `404.md` from a `404` collection entry, or a fallback
+   * "Page not found" page when there is none. Defaults to false.
+   */
+  notFoundPage?: boolean;
+  /**
+   * Make links in the generated Markdown work outside the site: links to other
+   * docs pages point to their Markdown files, other root-relative links and local
+   * images become absolute URLs. Requires Astro's `site` option for absolute URLs.
+   * Defaults to false.
+   */
+  absoluteLinks?: boolean;
 }
 
 export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
   return {
     name: 'starlight-md-txt',
     hooks: {
-      setup({ addIntegration }: any) {
+      setup({ addIntegration, addRouteMiddleware, logger }: any) {
+        const dynamicRouting = opts.dynamicRouting ?? true;
+        if (opts.alternateLink && !dynamicRouting) {
+          logger?.warn('`alternateLink` is on but `dynamicRouting` is off, so the links will point to Markdown files that are not generated.');
+        }
+
+        // Route middleware needs Starlight 0.32+; older versions just skip the <link> tag.
+        if (opts.alternateLink && typeof addRouteMiddleware === 'function') {
+          addRouteMiddleware({ entrypoint: fileURLToPath(new URL('./middleware.js', import.meta.url)) });
+        }
+
         addIntegration({
           name: 'starlight-md-txt-integration',
           hooks: {
@@ -26,11 +60,13 @@ export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
               const cleanFormat = format.startsWith('.') ? format : `.${format}`;
 
               // Inject the custom dynamic route matching [...slug] + format
-              injectRoute({
-                entrypoint: fileURLToPath(new URL('./route.js', import.meta.url)),
-                pattern: `/[...slug]${cleanFormat}`,
-                prerender: true,
-              });
+              if (dynamicRouting) {
+                injectRoute({
+                  entrypoint: fileURLToPath(new URL('./route.js', import.meta.url)),
+                  pattern: `/[...slug]${cleanFormat}`,
+                  prerender: true,
+                });
+              }
 
               // Create virtual module for configuration passing
               const virtualModuleId = 'virtual:starlight-md-txt/config';
@@ -51,6 +87,8 @@ export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
                           return `export const config = ${JSON.stringify({
                             includeDrafts: opts.includeDrafts ?? false,
                             format: cleanFormat,
+                            notFoundPage: opts.notFoundPage ?? false,
+                            absoluteLinks: opts.absoluteLinks ?? false,
                           })};`;
                         }
                       },

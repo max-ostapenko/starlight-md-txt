@@ -1,11 +1,14 @@
 # starlight-md-txt
 
-A community Starlight plugin to expose your documentation pages as raw, agent-friendly Markdown at `.md.txt` URLs (e.g. `/get-started/quickstart.md.txt`).
+A community Starlight plugin to expose your documentation pages as raw, agent-friendly Markdown at `.md` URLs (e.g. `/get-started/quickstart.md`), following the [llms.txt](https://llmstxt.org/) convention of serving a page's Markdown at its URL with `.md` appended. Set `format: '.md.txt'` to serve `text/plain` files instead.
 
 This is designed to help AI agents, LLMs, and search crawlers easily consume your documentation in a structured, clean format without navigation headers, footers, script code, or CSS wrappers.
 
 ## Features
-- **Dynamic Routing:** Automatically registers routes matching `/[...slug].md.txt` for all pages in your Starlight collection.
+- **Dynamic Routing (on by default):** Automatically registers routes matching `/[...slug].md` (or `.md.txt`) for all pages in your Starlight collection. The root index page is served at `/index.md`.
+- **Absolute links (opt-in):** With `absoluteLinks: true`, links to other docs pages point to their Markdown files, other root-relative links become absolute URLs, and local images point to their built `/_astro/` files, so a Markdown file works when read outside the site. Needs Astro's `site` option.
+- **Clean tables:** GFM tables in MDX pages round-trip as tables instead of escaped text.
+- **Discoverable (opt-in):** With `alternateLink: true`, adds `<link rel="alternate" type="text/markdown" href="…">` to each page's `<head>`, so agents and crawlers that land on the HTML page can find its Markdown version (Starlight 0.32+).
 - **AST-based MDX Transpilation:** Rather than basic regex/bruteforce string replacement, it uses a proper AST-based Remark parser (`unified`, `remark-parse`, `remark-mdx`) to translate custom Starlight/JSX components into clean, native Markdown elements:
   - `<Tabs>` and `<TabItem>` components are converted into clean, bold headers.
   - `<Aside>` elements are translated into blockquotes.
@@ -41,6 +44,16 @@ export default defineConfig({
         starlightMdTxt({
           // Optional: include draft pages in production builds
           includeDrafts: false,
+          // Optional: '.md' (default, text/markdown) or '.md.txt' (text/plain)
+          format: '.md',
+          // Optional: add <link rel="alternate"> to each page's <head>
+          alternateLink: false,
+          // Optional: set to false to stop generating the Markdown files
+          dynamicRouting: true,
+          // Optional: make links and images absolute, and point docs links to .md files
+          absoluteLinks: false,
+          // Optional: also generate 404.md
+          notFoundPage: false,
         }),
       ],
     }),
@@ -48,7 +61,7 @@ export default defineConfig({
 });
 ```
 
-Now, when you run your build, all of your documentation pages will have a corresponding `.md.txt` file (e.g., `dist/get-started/quickstart.md.txt`) alongside the standard HTML pages.
+Now, when you run your build, all of your documentation pages will have a corresponding `.md` file (e.g., `dist/get-started/quickstart.md`) alongside the standard HTML pages.
 
 ## License
 
