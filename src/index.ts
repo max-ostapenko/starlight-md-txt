@@ -11,6 +11,12 @@ export interface StarlightMdTxtOptions {
    * Defaults to '.md'.
    */
   format?: '.md' | '.md.txt';
+  /**
+   * Add `<link rel="alternate" type="text/markdown" href="...">` to each page's
+   * `<head>` so agents and crawlers can discover its Markdown version.
+   * Requires Starlight 0.32+. Defaults to false.
+   */
+  alternateLink?: boolean;
 }
 
 export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
@@ -19,7 +25,7 @@ export default function starlightMdTxt(opts: StarlightMdTxtOptions = {}): any {
     hooks: {
       setup({ addIntegration, addRouteMiddleware }: any) {
         // Route middleware needs Starlight 0.32+; older versions just skip the <link> tag.
-        if (typeof addRouteMiddleware === 'function') {
+        if (opts.alternateLink && typeof addRouteMiddleware === 'function') {
           addRouteMiddleware({ entrypoint: fileURLToPath(new URL('./middleware.js', import.meta.url)) });
         }
 

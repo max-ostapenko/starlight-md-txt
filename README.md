@@ -6,7 +6,7 @@ This is designed to help AI agents, LLMs, and search crawlers easily consume you
 
 ## Features
 - **Dynamic Routing:** Automatically registers routes matching `/[...slug].md` (or `.md.txt`) for all pages in your Starlight collection. The root index page is served at `/index.md`.
-- **Discoverable:** Adds `<link rel="alternate" type="text/markdown" href="…">` to each page's `<head>`, so agents and crawlers that land on the HTML page can find its Markdown version (Starlight 0.32+).
+- **Discoverable (opt-in):** With `alternateLink: true`, adds `<link rel="alternate" type="text/markdown" href="…">` to each page's `<head>`, so agents and crawlers that land on the HTML page can find its Markdown version (Starlight 0.32+).
 - **AST-based MDX Transpilation:** Rather than basic regex/bruteforce string replacement, it uses a proper AST-based Remark parser (`unified`, `remark-parse`, `remark-mdx`) to translate custom Starlight/JSX components into clean, native Markdown elements:
   - `<Tabs>` and `<TabItem>` components are converted into clean, bold headers.
   - `<Aside>` elements are translated into blockquotes.
@@ -42,6 +42,10 @@ export default defineConfig({
         starlightMdTxt({
           // Optional: include draft pages in production builds
           includeDrafts: false,
+          // Optional: '.md' (default, text/markdown) or '.md.txt' (text/plain)
+          format: '.md',
+          // Optional: add <link rel="alternate"> to each page's <head>
+          alternateLink: false,
         }),
       ],
     }),
