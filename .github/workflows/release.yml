@@ -36,10 +36,10 @@ jobs:
         id: changesets
         uses: changesets/action@v2
         with:
-          publish: npm run release
-          version: npm run version-packages
-          commit: "[ci] release"
-          title: "[ci] release"
+          publish-script: npm run release
+          version-script: npm run version-packages
+          commit-message: "[ci] release"
+          pr-title: "[ci] release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ""  # See https://github.com/changesets/changesets/issues/1152#issuecomment-3190884868
